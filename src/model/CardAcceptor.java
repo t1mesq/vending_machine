@@ -14,7 +14,7 @@ public class CardAcceptor implements MoneyReceiver {
 
     @Override
     public void setAmount(int amount) {
-        this.amount += amount;
+        this.amount = amount;
     }
 
     @Override

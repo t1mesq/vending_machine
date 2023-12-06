@@ -14,6 +14,6 @@ public class CoinAcceptor implements MoneyReceiver {
     }
 
     public void setAmount(int amount) {
-        this.amount += amount;
+        this.amount = amount;
     }
 }

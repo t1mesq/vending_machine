@@ -27,7 +27,7 @@ public class AppRunner {
                 new Pistachios(ActionLetter.G, 130)
         });
         coinAcceptor = new CoinAcceptor(100);
-        cardAcceptor = new CardAcceptor(100);
+        cardAcceptor = new CardAcceptor(0);
 
     }
 
