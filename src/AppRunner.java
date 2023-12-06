@@ -11,6 +11,8 @@ public class AppRunner {
 
     private final CoinAcceptor coinAcceptor;
 
+    private final CardAcceptor cardAcceptor;
+
     private static boolean isExit = false;
 
     private AppRunner() {
@@ -23,6 +25,8 @@ public class AppRunner {
                 new Pistachios(ActionLetter.G, 130)
         });
         coinAcceptor = new CoinAcceptor(100);
+        cardAcceptor = new CardAcceptor(100);
+
     }
 
     public static void run() {
