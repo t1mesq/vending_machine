@@ -13,6 +13,8 @@ public class AppRunner {
 
     private final CardAcceptor cardAcceptor;
 
+    private final Scanner sc = new Scanner(System.in);
+
     private static boolean isExit = false;
 
     private AppRunner() {
@@ -65,9 +67,17 @@ public class AppRunner {
         try {
             for (int i = 0; i < products.size(); i++) {
                 if (products.get(i).getActionLetter().equals(ActionLetter.valueOf(action.toUpperCase()))) {
-                    coinAcceptor.setAmount(coinAcceptor.getAmount() - products.get(i).getPrice());
-                    print("Вы купили " + products.get(i).getName());
-                    break;
+                    System.out.print("Choose payment method (card, coin): ");
+                    String userAction = sc.nextLine();
+                    if (userAction.equalsIgnoreCase("coin")){
+                        coinAcceptor.setAmount(coinAcceptor.getAmount() - products.get(i).getPrice());
+                        print("Вы купили " + products.get(i).getName());
+                        break;
+                    }else if (userAction.equalsIgnoreCase("card")){
+                        cardAcceptor.setAmount(cardAcceptor.getAmount() - products.get(i).getPrice());
+                        print("Вы купили " + products.get(i).getName());
+                        break;
+                    }
                 } else if ("h".equalsIgnoreCase(action)) {
                     isExit = true;
                     break;
