@@ -3,6 +3,7 @@ import model.*;
 import util.UniversalArray;
 import util.UniversalArrayImpl;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class AppRunner {
@@ -15,6 +16,8 @@ public class AppRunner {
 
     private final Scanner sc = new Scanner(System.in);
 
+    private static int totalAmount = 100;
+
     private static boolean isExit = false;
 
     private AppRunner() {
@@ -26,7 +29,7 @@ public class AppRunner {
                 new Mars(ActionLetter.F, 80),
                 new Pistachios(ActionLetter.G, 130)
         });
-        coinAcceptor = new CoinAcceptor(100);
+        coinAcceptor = new CoinAcceptor(totalAmount);
         cardAcceptor = new CardAcceptor(0);
 
     }
@@ -61,26 +64,41 @@ public class AppRunner {
     }
 
     private void chooseAction(UniversalArray<Product> products) {
+        int amount;
+        print(" a - пополнить баланс");
         showActions(products);
         print(" h - Выйти");
         String action = fromConsole().substring(0, 1);
         try {
             for (int i = 0; i < products.size(); i++) {
                 if (products.get(i).getActionLetter().equals(ActionLetter.valueOf(action.toUpperCase()))) {
-                    System.out.print("Choose payment method (card, coin): ");
-                    String userAction = sc.nextLine();
-                    if (userAction.equalsIgnoreCase("coin")){
-                        coinAcceptor.setAmount(coinAcceptor.getAmount() - products.get(i).getPrice());
-                        print("Вы купили " + products.get(i).getName());
-                        break;
-                    }else if (userAction.equalsIgnoreCase("card")){
-                        cardAcceptor.setAmount(cardAcceptor.getAmount() - products.get(i).getPrice());
-                        print("Вы купили " + products.get(i).getName());
-                        break;
-                    }
+                    coinAcceptor.setAmount(coinAcceptor.getAmount() - products.get(i).getPrice());
+                    print("Вы купили " + products.get(i).getName());
+                    break;
                 } else if ("h".equalsIgnoreCase(action)) {
                     isExit = true;
                     break;
+                } else if ("a".equalsIgnoreCase(action)) {
+                    print("выберите способ пополнения баланса (1 - монеты, 2 - картой)");
+                    try{
+                        int userAnswer = sc.nextInt();
+                        switch (userAnswer) {
+                            case 1:
+                                print("Введите сумму монет: ");
+                                amount = sc.nextInt();
+                                coinAcceptor.setAmount(amount);
+                                break;
+                            case 2:
+                                cardAcceptor.insertCard(sc);
+                                coinAcceptor.setAmount(cardAcceptor.getAmount());
+                                cardAcceptor.setAmount(0);
+                            default:
+                                print("Введите число от 1 до 2.");
+                        }
+                    }catch (InputMismatchException e) {
+                        print ("Ошибка ввода. Введите число от 1 до 2.");
+                    }
+
                 }
             }
         } catch (IllegalArgumentException e) {
